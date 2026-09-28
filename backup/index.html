@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-immersive-translate-page-theme="light"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>QUANT ENGINE v10.0 · 量化策略引擎</title>
+<link rel="stylesheet" href="styles.css">
+<style data-id="immersive-translate-input-injected-css"></style></head>
+<body>
+<div class="backdrop" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+<div class="shell">
+
+  <!-- ============================== TOP BAR ============================== -->
+  <header class="topbar glass">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 16.5 8 11l4 3.6L21 5"></path>
+          <path d="M15 5h6v6"></path>
+        </svg>
+      </span>
+      <span class="brand-name">QUANT ENGINE</span>
+      <span class="brand-ver">v10.0</span>
+    </div>
+    <div class="topbar-right">
+      <span class="status-pill"><i class="dot"></i>ENGINE ONLINE</span>
+      <span class="clock mono" id="clock">13:44:47</span>
+      <button class="icon-btn" id="btnSync" type="button" title="同步数据" aria-label="同步数据">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12a9 9 0 1 1-2.64-6.36"></path><path d="M21 3v6h-6"></path>
+        </svg>
+      </button>
+      <button class="icon-btn" type="button" title="引擎设置" aria-label="引擎设置">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-2.87 1.2V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 2.6 15H2.5a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 7a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 2.6h.09A2 2 0 0 1 11 .5"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================== MAIN GRID ============================== -->
+  <div class="layout">
+
+    <div class="main">
+
+    <!-- ---------------------------- BACKTEST CHART ---------------------------- -->
+    <section class="panel glass chart-panel">
+      <div class="panel-head">
+        <div class="panel-title">
+          <h2>日线回测</h2>
+          <span class="panel-sub">Backtest Chart</span>
+        </div>
+        <div class="panel-tools">
+          <span class="tag" id="rangeTag">980 根 K线 · 4Y</span>
+          <button class="btn ghost" id="btnFetch" type="button">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 1 1-2.64-6.36"></path><path d="M21 3v6h-6"></path>
+            </svg>
+            获取数据
+          </button>
+        </div>
+      </div>
+
+      <div class="chart-wrap">
+        <canvas id="chart" role="img" aria-label="日线回测 K 线图，含成交量与 MA5 / MA10 / MA20 均线" width="1990" height="975"></canvas>
+        <div class="chart-tip glass" id="chartTip" aria-hidden="true">
+          <div class="tip-date mono" id="tipDate"></div>
+          <dl class="tip-grid" id="tipGrid"></dl>
+        </div>
+      </div>
+
+      <div class="chart-foot">
+        <span class="mono" id="rangeLabel" style="font-size:12px;font-weight:650;color:var(--text-2)">980 / 980</span>
+        <input class="slider" id="range" type="range" min="0" max="896" value="980" aria-label="K 线区间">
+        <div class="legend">
+          <span><i></i>MA5</span>
+          <span><i class="dash"></i>MA10</span>
+          <span><i class="dash" style="opacity:.45"></i>MA20</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TERMINAL LOG -->
+    <section class="panel glass log-panel">
+      <div class="panel-head">
+        <div class="panel-title">
+          <h2>终端日志</h2>
+          <span class="panel-sub">Terminal Log</span>
+        </div>
+        <span class="tag mono" id="logCount">55 lines</span>
+      </div>
+      <div class="log-scroll" id="logScroll" role="log" aria-live="polite"><div class="log-line"><span class="t">13:17:17</span><span class="lv INFO">[INFO]</span><span class="msg">正在订阅行情数据源…</span><span class="ohlc"> O:332.64 H:352.52 L:159.27 C:165.09 V:41,996</span></div><div class="log-line"><span class="t">13:17:17</span><span class="lv OK">[OK]</span><span class="msg">QUANT ENGINE v10.0 启动成功</span></div><div class="log-line"><span class="t">13:17:17</span><span class="lv OK">[OK]</span><span class="msg">数据加载完成: 980 根 K线</span><span class="ohlc"> O:434.02 H:444.46 L:71.50 C:74.69 V:65,730</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv INFO">[INFO]</span><span class="msg">DOGE/USDT 行情订阅已建立</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv INFO">[INFO]</span><span class="msg">ADA/USDT 均线交叉检测中</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv OK">[OK]</span><span class="msg">XRP/USDT 回测引擎就绪</span><span class="ohlc"> O:55.41 H:332.31 L:41.63 C:313.27 V:54,645</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv OK">[OK]</span><span class="msg">BNB/USDT MACD 柱状图更新</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv INFO">[INFO]</span><span class="msg">BNB/USDT 均线交叉检测中</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv OK">[OK]</span><span class="msg">ETH/USDT 回测引擎就绪</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv ERR">[ERR]</span><span class="msg">ADA/USDT 连接延迟 &gt;200ms</span><span class="ohlc"> O:341.98 H:352.78 L:213.76 C:218.95 V:10,870</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv INFO">[INFO]</span><span class="msg">ETH/USDT 均线交叉检测中</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv OK">[OK]</span><span class="msg">SOL/USDT 信号计算完成</span><span class="ohlc"> O:46.20 H:79.75 L:30.88 C:73.65 V:28,661</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv INFO">[INFO]</span><span class="msg">XRP/USDT 行情订阅已建立</span><span class="ohlc"> O:50.29 H:251.45 L:37.86 C:242.16 V:36,099</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv INFO">[INFO]</span><span class="msg">BNB/USDT 风控模块巡检</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv INFO">[INFO]</span><span class="msg">SOL/USDT 订单簿深度扫描</span><span class="ohlc"> O:290.05 H:298.38 L:164.73 C:171.37 V:18,338</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv OK">[OK]</span><span class="msg">BNB/USDT 回测引擎就绪</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv INFO">[INFO]</span><span class="msg">ETH/USDT 风控模块巡检</span><span class="ohlc"> O:410.67 H:432.13 L:77.92 C:90.10 V:31,648</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv OK">[OK]</span><span class="msg">BTC/USDT 回测引擎就绪</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv OK">[OK]</span><span class="msg">ETH/USDT 回测引擎就绪</span><span class="ohlc"> O:83.11 H:290.59 L:69.76 C:277.85 V:15,289</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv OK">[OK]</span><span class="msg">ADA/USDT 策略信号已分发</span><span class="ohlc"> O:137.85 H:493.35 L:131.05 C:489.56 V:862</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv OK">[OK]</span><span class="msg">DOGE/USDT 回测引擎就绪</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv OK">[OK]</span><span class="msg">SOL/USDT MACD 柱状图更新</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv INFO">[INFO]</span><span class="msg">DOGE/USDT 风控模块巡检</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv OK">[OK]</span><span class="msg">BNB/USDT 回测引擎就绪</span><span class="ohlc"> O:348.95 H:361.56 L:108.12 C:123.76 V:16,536</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv INFO">[INFO]</span><span class="msg">BTC/USDT 行情订阅已建立</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv OK">[OK]</span><span class="msg">BTC/USDT 回测引擎就绪</span></div><div class="log-line"><span class="t">13:43:26</span><span class="lv INFO">[INFO]</span><span class="msg">ADA/USDT 均线交叉检测中</span></div><div class="log-line"><span class="t">13:43:29</span><span class="lv INFO">[INFO]</span><span class="msg">BTC/USDT 订单簿深度扫描</span><span class="ohlc"> O:233.41 H:260.18 L:224.13 C:228.11 V:93,994</span></div><div class="log-line"><span class="t">13:43:31</span><span class="lv INFO">[INFO]</span><span class="msg">ADA/USDT 订单簿深度扫描</span><span class="ohlc"> O:79.70 H:123.48 L:79.35 C:122.27 V:37,251</span></div><div class="log-line"><span class="t">13:43:33</span><span class="lv OK">[OK]</span><span class="msg">BNB/USDT 信号计算完成</span></div><div class="log-line"><span class="t">13:43:35</span><span class="lv INFO">[INFO]</span><span class="msg">ADA/USDT 行情订阅已建立</span></div><div class="log-line"><span class="t">13:43:37</span><span class="lv OK">[OK]</span><span class="msg">ADA/USDT 回测引擎就绪</span></div><div class="log-line"><span class="t">13:43:39</span><span class="lv OK">[OK]</span><span class="msg">ADA/USDT 回测引擎就绪</span><span class="ohlc"> O:509.61 H:513.03 L:477.75 C:486.31 V:61,951</span></div><div class="log-line"><span class="t">13:44:04</span><span class="lv INFO">[INFO]</span><span class="msg">BTC/USDT 均线交叉检测中</span></div><div class="log-line"><span class="t">13:44:06</span><span class="lv INFO">[INFO]</span><span class="msg">BNB/USDT 行情订阅已建立</span></div><div class="log-line"><span class="t">13:44:10</span><span class="lv WARN">[WARN]</span><span class="msg">BTC/USDT 波动率异常上升</span></div><div class="log-line"><span class="t">13:44:11</span><span class="lv INFO">[INFO]</span><span class="msg">DOGE/USDT 风控模块巡检</span></div><div class="log-line"><span class="t">13:44:13</span><span class="lv INFO">[INFO]</span><span class="msg">SOL/USDT 资金费率结算</span></div><div class="log-line"><span class="t">13:44:15</span><span class="lv INFO">[INFO]</span><span class="msg">BNB/USDT 行情订阅已建立</span><span class="ohlc"> O:391.28 H:471.68 L:387.80 C:443.78 V:17,852</span></div><div class="log-line"><span class="t">13:44:17</span><span class="lv OK">[OK]</span><span class="msg">XRP/USDT 回测引擎就绪</span></div><div class="log-line"><span class="t">13:44:19</span><span class="lv INFO">[INFO]</span><span class="msg">ETH/USDT 订单簿深度扫描</span></div><div class="log-line"><span class="t">13:44:21</span><span class="lv INFO">[INFO]</span><span class="msg">ADA/USDT 风控模块巡检</span><span class="ohlc"> O:63.28 H:158.68 L:57.56 C:156.13 V:37,157</span></div><div class="log-line"><span class="t">13:44:23</span><span class="lv INFO">[INFO]</span><span class="msg">BNB/USDT 订单簿深度扫描</span></div><div class="log-line"><span class="t">13:44:25</span><span class="lv INFO">[INFO]</span><span class="msg">查看回测交易点 2025-11-04</span></div><div class="log-line"><span class="t">13:44:25</span><span class="lv INFO">[INFO]</span><span class="msg">ETH/USDT 均线交叉检测中</span><span class="ohlc"> O:293.50 H:445.58 L:286.38 C:427.94 V:50,940</span></div><div class="log-line"><span class="t">13:44:27</span><span class="lv OK">[OK]</span><span class="msg" style="font-size: 12px;">ETH/USDT MACD 柱状图更新</span></div><div class="log-line"><span class="t">13:44:30</span><span class="lv OK">[OK]</span><span class="msg">BNB/USDT 回测引擎就绪</span><span class="ohlc"> O:122.34 H:329.18 L:116.79 C:315.80 V:96,993</span></div><div class="log-line"><span class="t">13:44:32</span><span class="lv INFO">[INFO]</span><span class="msg">BTC/USDT 订单簿深度扫描</span></div><div class="log-line"><span class="t">13:44:34</span><span class="lv OK">[OK]</span><span class="msg">SOL/USDT MACD 柱状图更新</span><span class="ohlc"> O:486.21 H:511.43 L:296.69 C:315.30 V:92,108</span></div><div class="log-line"><span class="t">13:44:36</span><span class="lv INFO">[INFO]</span><span class="msg">DOGE/USDT 资金费率结算</span></div><div class="log-line"><span class="t">13:44:38</span><span class="lv WARN">[WARN]</span><span class="msg">BNB/USDT 滑点超出阈值</span><span class="ohlc"> O:392.92 H:408.65 L:116.81 C:135.66 V:43,948</span></div><div class="log-line"><span class="t">13:44:40</span><span class="lv OK">[OK]</span><span class="msg">BNB/USDT 回测引擎就绪</span></div><div class="log-line"><span class="t">13:44:42</span><span class="lv INFO">[INFO]</span><span class="msg">XRP/USDT 订单簿深度扫描</span></div><div class="log-line"><span class="t">13:44:44</span><span class="lv OK">[OK]</span><span class="msg">SOL/USDT 回测引擎就绪</span></div><div class="log-line"><span class="t">13:44:46</span><span class="lv OK">[OK]</span><span class="msg">SOL/USDT 策略信号已分发</span></div></div>
+    </section>
+
+    </div>
+
+    <!-- ------------------------------- SIDE COLUMN ------------------------------- -->
+    <aside class="side">
+
+      <!-- STRATEGY ENGINE -->
+      <section class="panel glass">
+        <div class="panel-head">
+          <div class="panel-title">
+            <h2>策略引擎</h2>
+            <span class="panel-sub">Strategy Engine</span>
+          </div>
+          <span class="tag" id="strategyCount">0 策略</span>
+        </div>
+
+        <div style="margin-top:10px">
+          <div class="field-row">
+            <label class="field-label" for="fSymbol">标的</label>
+            <select class="field-input" id="fSymbol">
+              <option selected="">BTC/USDT</option>
+              <option>ETH/USDT</option>
+              <option>SOL/USDT</option>
+              <option>BNB/USDT</option>
+              <option>XRP/USDT</option>
+              <option>DOGE/USDT</option>
+              <option>ADA/USDT</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="fWin">胜率 <span class="field-unit">%</span></label>
+            <input class="field-input mono" id="fWin" type="text" inputmode="decimal" value="62">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="fSl">止损 <span class="field-unit">%</span></label>
+            <input class="field-input mono" id="fSl" type="text" inputmode="decimal" value="5">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="fTp">目标 <span class="field-unit">%</span></label>
+            <input class="field-input mono" id="fTp" type="text" inputmode="decimal" value="15">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="fRr">赔率</label>
+            <input class="field-input mono" id="fRr" type="text" inputmode="decimal" value="2.4">
+          </div>
+        </div>
+
+        <div class="btn-row" style="margin-top:14px">
+          <button class="btn primary" id="btnGen" type="button">AI 生成策略</button>
+          <button class="btn" id="btnGen10" type="button">生成 10 策略</button>
+          <button class="btn" id="btnFetch2" type="button">获取数据</button>
+          <button class="btn" id="btnShort" type="button">反向做空</button>
+        </div>
+      </section>
+
+      <!-- SIGNAL PANEL -->
+      <section class="panel glass">
+        <div class="panel-head">
+          <div class="panel-title">
+            <h2>信号面板</h2>
+            <span class="panel-sub">Signal Panel</span>
+          </div>
+          <span class="tag live"><i class="dot"></i>REALTIME</span>
+        </div>
+
+        <div class="signal-hero">
+          <div>
+            <div class="k">综合信号 / Signal</div>
+            <div class="v" id="sigVerdict">做多</div>
+            <div class="en" id="sigVerdictEn" style="margin-top:2px">LONG</div>
+          </div>
+          <div class="signal-arrow" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric"><div class="k">VOL 波动率</div><div class="v" id="mVol">1.19<small>%</small></div></div>
+          <div class="metric"><div class="k">综合评分</div><div class="v" id="mScore">56</div></div>
+          <div class="metric"><div class="k">胜率</div><div class="v" id="mWin">59.5<small>%</small></div></div>
+          <div class="metric"><div class="k">赔率</div><div class="v" id="mRr">2.30</div></div>
+          <div class="metric"><div class="k">风险等级</div><div class="v" id="mRisk">24</div></div>
+          <div class="metric"><div class="k">仓位建议</div><div class="v" id="mPos">54<small>%</small></div></div>
+          <div class="metric wide"><div class="k">EV 期望收益</div><div class="v" id="mEv">76.73<small>%</small></div></div>
+        </div>
+      </section>
+
+      <!-- MACD -->
+      <section class="panel glass">
+        <div class="panel-head">
+          <div class="panel-title">
+            <h2>MACD 指标</h2>
+            <span class="panel-sub">EMA(5,34,5)</span>
+          </div>
+        </div>
+        <div class="formula mono">
+          <span class="fx">DIFF = EMA5 − EMA34</span> <span class="fsep">/</span>
+          <span class="fx">DEA = EMA5(DIFF)</span> <span class="fsep">/</span>
+          <span class="fx">MACD = 2 × (DIFF − DEA)</span>
+        </div>
+        <div style="margin-top:6px">
+          <div class="ind-row">
+            <span class="ind-name">DIFF</span>
+            <span><span class="ind-val mono" id="vDiff">0.0182</span><span class="ind-desc">收盘价 5 日平滑均线 − 34 日平滑均线</span></span>
+          </div>
+          <div class="ind-row">
+            <span class="ind-name">DEA</span>
+            <span><span class="ind-val mono" id="vDea">-0.0255</span><span class="ind-desc">DIFF 的 5 日平滑移动平均</span></span>
+          </div>
+          <div class="ind-row">
+            <span class="ind-name">MACD</span>
+            <span><span class="ind-val mono" id="vMacd">0.0874</span><span class="ind-desc">2 × (DIFF − DEA)，柱状能量柱</span></span>
+          </div>
+        </div>
+      </section>
+
+    </aside>
+  </div>
+
+  <!-- ========================= PERFORMANCE REPORT ========================= -->
+  <section class="panel glass report">
+    <div class="report-head">
+      <div class="panel-title">
+        <h2>回测绩效报告 · 止损反转</h2>
+      </div>
+      <div class="report-tags">
+        <span class="tag">BTC/USDT</span>
+        <span class="tag">突破回踩</span>
+        <span class="tag">做空 ×</span>
+      </div>
+    </div>
+
+    <div class="timeline" id="timeline">
+      <div class="track-fill" id="trackFill" style="width: 56%;"></div>
+    <div class="marker" style="left: 24%;"><span class="m-dir">做空</span><button type="button" aria-label="2025-08-12"><i></i></button><span class="m-label mono">2025-08-12</span></div><div class="marker active" style="left: 56%;"><span class="m-dir">做空</span><button type="button" aria-label="2025-11-04"><i></i></button><span class="m-label mono">2025-11-04</span></div><div class="marker" style="left: 84%;"><span class="m-dir">做多</span><button type="button" aria-label="2026-03-18"><i></i></button><span class="m-label mono">2026-03-18</span></div></div>
+
+    <div class="report-detail" id="reportDetail"><div class="detail-block"><div class="bk">MACD 指标</div><div class="brow"><span>MACD</span><span class="mono">-0.126</span></div><div class="brow"><span>DIFF</span><span class="mono">8.3317</span></div><div class="brow"><span>DEA</span><span class="mono">8.3947</span></div></div><div class="detail-block"><div class="bk">成交量</div><div class="brow"><span>2025-11-04</span><span class="mono">1,742,880</span></div></div><div class="detail-block"><div class="bk">K线</div><div class="brow"><span>open</span><span class="mono">266.11</span></div><div class="brow"><span>close</span><span class="mono">274.55</span></div><div class="brow"><span>lowest</span><span class="mono">264.02</span></div><div class="brow"><span>highest</span><span class="mono">275.90</span></div></div><div class="detail-block"><div class="bk">均线 / 方向</div><div class="brow"><span>MA5</span><span class="mono">269.4</span></div><div class="brow"><span>MA10</span><span class="mono">265.18</span></div><div class="brow"><span>MA20</span><span class="mono">261.44</span></div><div class="brow"><span>方向</span><span>做空</span></div></div></div>
+  </section>
+
+</div>
+
+<script src="app.js"></script>
+
+
+</body></html>
