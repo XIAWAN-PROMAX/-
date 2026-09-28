@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#ffffff" />
+<title>QUANT ENGINE v10.0 · 量化策略引擎</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="backdrop" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+<div class="shell">
+
+  <!-- ============================== TOP BAR ============================== -->
+  <header class="topbar glass">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 16.5 8 11l4 3.6L21 5"/>
+          <path d="M15 5h6v6"/>
+        </svg>
+      </span>
+      <span class="brand-name">QUANT ENGINE</span>
+      <span class="brand-ver">v10.0</span>
+    </div>
+    <div class="topbar-right">
+      <span class="status-pill"><i class="dot"></i>ENGINE ONLINE</span>
+      <span class="clock mono" id="clock">--:--:--</span>
+      <button class="icon-btn" id="btnSync" type="button" title="同步数据" aria-label="同步数据">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/>
+        </svg>
+      </button>
+      <button class="icon-btn" type="button" title="引擎设置" aria-label="引擎设置">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-2.87 1.2V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 2.6 15H2.5a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 7a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 2.6h.09A2 2 0 0 1 11 .5"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================== MAIN GRID ============================== -->
+  <div class="layout">
+
+    <div class="main">
+
+    <!-- ---------------------------- BACKTEST CHART ---------------------------- -->
+    <section class="panel glass chart-panel">
+      <div class="panel-head">
+        <div class="panel-title">
+          <h2>日线回测</h2>
+          <span class="panel-sub">Backtest Chart</span>
+        </div>
+        <div class="panel-tools">
+          <span class="tag" id="rangeTag">980 根 K线 · 4Y</span>
+          <button class="btn ghost" id="btnFetch" type="button">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/>
+            </svg>
+            获取数据
+          </button>
+        </div>
+      </div>
+
+      <div class="chart-wrap">
+        <canvas id="chart" role="img" aria-label="日线回测 K 线图，含成交量与 MA5 / MA10 / MA20 均线"></canvas>
+        <div class="chart-tip glass" id="chartTip" aria-hidden="true">
+          <div class="tip-date mono" id="tipDate"></div>
+          <dl class="tip-grid" id="tipGrid"></dl>
+        </div>
+      </div>
+
+      <div class="chart-foot">
+        <span class="mono" id="rangeLabel" style="font-size:12px;font-weight:650;color:var(--text-2)">980 / 980</span>
+        <input class="slider" id="range" type="range" min="0" max="980" value="980" aria-label="K 线区间" />
+        <div class="legend">
+          <span><i></i>MA5</span>
+          <span><i class="dash"></i>MA10</span>
+          <span><i class="dash" style="opacity:.45"></i>MA20</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TERMINAL LOG -->
+    <section class="panel glass log-panel">
+      <div class="panel-head">
+        <div class="panel-title">
+          <h2>终端日志</h2>
+          <span class="panel-sub">Terminal Log</span>
+        </div>
+        <span class="tag mono" id="logCount">0 lines</span>
+      </div>
+      <div class="log-scroll" id="logScroll" role="log" aria-live="polite"></div>
+    </section>
+
+    </div>
+
+    <!-- ------------------------------- SIDE COLUMN ------------------------------- -->
+    <aside class="side">
+
+      <!-- STRATEGY ENGINE -->
+      <section class="panel glass">
+        <div class="panel-head">
+          <div class="panel-title">
+            <h2>策略引擎</h2>
+            <span class="panel-sub">Strategy Engine</span>
+          </div>
+          <span class="tag" id="strategyCount">0 策略</span>
+        </div>
+
+        <div style="margin-top:10px">
+          <div class="field-row">
+            <label class="field-label" for="fSymbol">标的</label>
+            <select class="field-input" id="fSymbol">
+              <option selected>BTC/USDT</option>
+              <option>ETH/USDT</option>
+              <option>SOL/USDT</option>
+              <option>BNB/USDT</option>
+              <option>XRP/USDT</option>
+              <option>DOGE/USDT</option>
+              <option>ADA/USDT</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="fWin">胜率 <span class="field-unit">%</span></label>
+            <input class="field-input mono" id="fWin" type="text" inputmode="decimal" value="62" />
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="fSl">止损 <span class="field-unit">%</span></label>
+            <input class="field-input mono" id="fSl" type="text" inputmode="decimal" value="5" />
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="fTp">目标 <span class="field-unit">%</span></label>
+            <input class="field-input mono" id="fTp" type="text" inputmode="decimal" value="15" />
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="fRr">赔率</label>
+            <input class="field-input mono" id="fRr" type="text" inputmode="decimal" value="2.4" />
+          </div>
+        </div>
+
+        <div class="btn-row" style="margin-top:14px">
+          <button class="btn primary" id="btnGen" type="button">AI 生成策略</button>
+          <button class="btn" id="btnGen10" type="button">生成 10 策略</button>
+          <button class="btn" id="btnFetch2" type="button">获取数据</button>
+          <button class="btn" id="btnShort" type="button">反向做空</button>
+        </div>
+      </section>
+
+      <!-- SIGNAL PANEL -->
+      <section class="panel glass">
+        <div class="panel-head">
+          <div class="panel-title">
+            <h2>信号面板</h2>
+            <span class="panel-sub">Signal Panel</span>
+          </div>
+          <span class="tag live"><i class="dot"></i>REALTIME</span>
+        </div>
+
+        <div class="signal-hero">
+          <div>
+            <div class="k">综合信号 / Signal</div>
+            <div class="v" id="sigVerdict">做多</div>
+            <div class="en" id="sigVerdictEn" style="margin-top:2px">LONG</div>
+          </div>
+          <div class="signal-arrow" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 19V5"/><path d="m5 12 7-7 7 7"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric"><div class="k">VOL 波动率</div><div class="v" id="mVol">1.19<small>%</small></div></div>
+          <div class="metric"><div class="k">综合评分</div><div class="v" id="mScore">56</div></div>
+          <div class="metric"><div class="k">胜率</div><div class="v" id="mWin">59.5<small>%</small></div></div>
+          <div class="metric"><div class="k">赔率</div><div class="v" id="mRr">2.30</div></div>
+          <div class="metric"><div class="k">风险等级</div><div class="v" id="mRisk">24</div></div>
+          <div class="metric"><div class="k">仓位建议</div><div class="v" id="mPos">54<small>%</small></div></div>
+          <div class="metric wide"><div class="k">EV 期望收益</div><div class="v" id="mEv">76.73<small>%</small></div></div>
+        </div>
+      </section>
+
+      <!-- MACD -->
+      <section class="panel glass">
+        <div class="panel-head">
+          <div class="panel-title">
+            <h2>MACD 指标</h2>
+            <span class="panel-sub">EMA(5,34,5)</span>
+          </div>
+        </div>
+        <div class="formula mono">
+          <span class="fx">DIFF = EMA5 − EMA34</span> <span class="fsep">/</span>
+          <span class="fx">DEA = EMA5(DIFF)</span> <span class="fsep">/</span>
+          <span class="fx">MACD = 2 × (DIFF − DEA)</span>
+        </div>
+        <div style="margin-top:6px">
+          <div class="ind-row">
+            <span class="ind-name">DIFF</span>
+            <span><span class="ind-val mono" id="vDiff">0.0182</span><span class="ind-desc">收盘价 5 日平滑均线 − 34 日平滑均线</span></span>
+          </div>
+          <div class="ind-row">
+            <span class="ind-name">DEA</span>
+            <span><span class="ind-val mono" id="vDea">-0.0255</span><span class="ind-desc">DIFF 的 5 日平滑移动平均</span></span>
+          </div>
+          <div class="ind-row">
+            <span class="ind-name">MACD</span>
+            <span><span class="ind-val mono" id="vMacd">0.0874</span><span class="ind-desc">2 × (DIFF − DEA)，柱状能量柱</span></span>
+          </div>
+        </div>
+      </section>
+
+    </aside>
+  </div>
+
+  <!-- ========================= PERFORMANCE REPORT ========================= -->
+  <section class="panel glass report">
+    <div class="report-head">
+      <div class="panel-title">
+        <h2>回测绩效报告 · 止损反转</h2>
+      </div>
+      <div class="report-tags">
+        <span class="tag">BTC/USDT</span>
+        <span class="tag">突破回踩</span>
+        <span class="tag">做空 ×</span>
+      </div>
+    </div>
+
+    <div class="timeline" id="timeline">
+      <div class="track-fill" id="trackFill" style="width:0%"></div>
+    </div>
+
+    <div class="report-detail" id="reportDetail"></div>
+  </section>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
